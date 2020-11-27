@@ -10,8 +10,9 @@ import java.util.Random;
  * 
  * @author Steven Centeno
  *
- * This TCP server has the logical operations capable of generating a password given 
- * the maximum and minimum length for the password and other info
+ * This TCP server generates a password given 
+ * the maximum and minimum length for the password and other info such as how many special characters
+ * to include and whether or not you want numbers
  */
 public class TCP_Server_A 
 {

@@ -31,11 +31,11 @@ public class UDP_Client_A
 		String input = br.readLine();
 		System.out.print("Enter maximum number of characters for the password :");
 		input = input.concat(" " + br.readLine());
-		System.out.print("Enter minimum number of special characters for the password :");
+		System.out.print("Enter minimum number of special characters for the password (0 means no special characters) :");
 		input = input.concat(" " + br.readLine());
-		System.out.print("Enter whether you want or dont want numbers in the password (yes or no) :");
+		System.out.print("Do you want numbers in the password? (yes or no) :");
 		input = input.concat(" " + br.readLine());
-		System.out.print("do you want to generate a password? (yes or no) : ");
+		System.out.print("Do you want to generate a password? (yes or no) : ");
 		input = input.concat(" " + br.readLine());
 		
 		// send the data through a datagram
