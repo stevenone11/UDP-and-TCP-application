@@ -9,7 +9,7 @@ public class TCP_Client_A {
 		int ch = 0,a,b,c;
 		String d,out;
 		
-		Socket s = new Socket("localhost", 1024);
+		Socket s = new Socket("localhost", 1005);
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		PrintStream ps = new PrintStream(s.getOutputStream());
 		

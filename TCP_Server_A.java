@@ -23,7 +23,7 @@ public class TCP_Server_A
 		String numChoice;
 		int choice, minAmtOfChars = 0, maxAmtOfChars = 0, minAmtOfSChars= 0;
 		boolean nums = false;
-		ServerSocket ss = new ServerSocket(1024);
+		ServerSocket ss = new ServerSocket(1005);
 		Socket s = ss.accept();
 		BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));
 		
