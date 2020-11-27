@@ -1,87 +1,101 @@
-package TCP_Assignment;
-import java.net.*;
+package UDP_Assignment;
 import java.io.*;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Random;
-
+import java.net.*;
+import java.util.*;
 
 /**
  * 
- * @author Steven Centeno
+ * @author steve
  *
- * This TCP server has the logical operations capable of generating a password given 
- * the maximum and minimum length for the password and other info
+ * The server side of the UDP protocol to generate a password
  */
-public class TCP_Server_A 
+public class UDP_Server_A 
 {
 
-	public static void main(String[] args) throws Exception
+	public static void main(String[] args) throws IOException
 	{
 		
-		// sets up the server's socket for input
-		String numChoice;
-		int choice, minAmtOfChars = 0, maxAmtOfChars = 0, minAmtOfSChars= 0;
-		boolean nums = false;
-		ServerSocket ss = new ServerSocket(1005);
-		Socket s = ss.accept();
-		BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));
+		// setting up the datagram to receive data
+		DatagramSocket ss = new DatagramSocket(2100);
+		byte[] sendData = new byte[1024];
+		byte[] recData = new byte[1024];
+		String minAmtOfCharsStr = "", maxAmtOfCharsStr = "", minAmtOfSCharsStr = "", choiceNums = "", choice = "", password = "";
+		int a, b, c, count, n = 0, i = 0;
+		boolean d;
+		String e;
 		
-		// now reads input from the server's socket
-		// first will ask for the minimum amount of characters
-		// will catch the error if the user inputed a character instead
-		minAmtOfChars = Integer.parseInt(br.readLine());
+		DatagramPacket dp = new DatagramPacket(recData, recData.length);
+		ss.receive(dp);
+		String input = new String(dp.getData());
 		
-		// then will ask for the maximum amount of characters
-		// will catch the error if the user inputed a character instead
-		maxAmtOfChars = Integer.parseInt(br.readLine());
-		
-		//gets the minimum amount of special characters
-		minAmtOfSChars = Integer.parseInt(br.readLine());
-		
-		// decides whether the user wants to have numbers or not
-		numChoice = br.readLine();
-		
-		// finally it will ask if the user wants to (0: quit, 1: generate a password) 
-		choice = Integer.parseInt(br.readLine());
-		
-		// the decision of whether to include numbers or not
-		if (numChoice == "yes" || numChoice == "yes")
+		// reads through the string
+		// every time there is an empty space, 
+		for (count = 0; count < input.length(); count ++) 
 		{
-			nums = true;
-		}
-		else if (numChoice == "No" || numChoice == "no")
-		{
-			nums = false;
-		}
-		
-		// the choice the user selected
-		String password = "";
-		if (choice != 0) 
-		{
-			
-			// creates a password with given parameters
-			password = GeneratePass(minAmtOfChars, maxAmtOfChars, minAmtOfSChars, nums);
-			
-		}
-		
-		else if (choice == 0)
-		{
-			password = "No password generated: Exited program.";
+			if (input.charAt(count) == ' ') 
+			{
+				n++;
+				if (n == 1) 
+				{
+					minAmtOfCharsStr = input.substring(i,count);
+					i = count;
+				}
+				
+				if (n == 2) 
+				{
+					maxAmtOfCharsStr = input.substring(i + 1, count);
+					i = count;
+				}
+				if (n == 3)
+				{
+					minAmtOfSCharsStr = input.substring(i + 1, count);
+					i = count;
+				}
+				if (n == 4)
+				{
+					choiceNums = input.substring(i + 1, count);
+					i = count;
+					choice = input.substring(i + 1, input.length());
+				}
+			}
 		}
 		
+		// translates the user's input to their respective types to run the GeneratePass function
+		InetAddress ip = dp.getAddress();
+		a = Integer.parseInt(minAmtOfCharsStr);
+		b = Integer.parseInt(maxAmtOfCharsStr);
+		c = Integer.parseInt(minAmtOfSCharsStr);
+
+		if (choiceNums.equals("Yes") || choiceNums.equals("yes")) 
+		{
+			d = true;
+		}
+		else
+		{
+			d = false;
+		}
+		
+		choice = choice.trim(); // gets rid of ending trail of whitespace
+		if (choice.equals("Yes") || choice.equals("yes")) 
+		{
+			password = GeneratePass(a,b,c,d);
+		}
 		else 
 		{
-			password = "No password generated: Invalid input.";
+			password = "No password generated.";
 		}
 		
-		// now sends the password to the client side
-		PrintStream pr = new PrintStream(s.getOutputStream());
-		pr.println(password);
+		// sends the response message to the user
+		int port = dp.getPort();
+		String output = password;
+		sendData = output.getBytes();
+		DatagramPacket dp1 = new DatagramPacket(sendData, sendData.length, ip, port);
+		ss.send(dp1);
 		ss.close();
-		s.close();
 		
 	}
+	
+	
 	
 	/*
 	 * method that generates the password given the min-max chars and min amount of special
