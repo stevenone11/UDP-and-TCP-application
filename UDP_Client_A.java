@@ -40,7 +40,7 @@ public class UDP_Client_A
 		
 		// send the data through a datagram
 		sendData = input.getBytes();
-		DatagramPacket dp = new DatagramPacket(sendData, sendData.length, ip, 2100);
+		DatagramPacket dp = new DatagramPacket(sendData, sendData.length, ip, 2200);
 		ds.send(dp);
 		
 		// now receive the output from the server

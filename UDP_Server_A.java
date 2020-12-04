@@ -16,7 +16,7 @@ public class UDP_Server_A
 	{
 		
 		// setting up the datagram to receive data
-		DatagramSocket ss = new DatagramSocket(2100);
+		DatagramSocket ss = new DatagramSocket(2200);
 		byte[] sendData = new byte[1024];
 		byte[] recData = new byte[1024];
 		String minAmtOfCharsStr = "", maxAmtOfCharsStr = "", minAmtOfSCharsStr = "", choiceNums = "", choice = "", password = "";
